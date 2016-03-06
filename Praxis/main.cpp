@@ -5,7 +5,7 @@
 #include <iostream>
 #include "Praxis.h"
 
-BOOST_AUTO_TEST_CASE(TestPraxis004) {
-	Praxis004();
+BOOST_AUTO_TEST_CASE(TestPraxis) {
+	Praxis008();
 }
 
