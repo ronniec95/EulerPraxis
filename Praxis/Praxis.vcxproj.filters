@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Euler">
+      <UniqueIdentifier>{e75dcd0f-955b-463a-9323-263aab338819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Praxis">
+      <UniqueIdentifier>{7e378fa9-b825-4085-9957-2c0005fc9178}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Praxis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Euler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis004.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis001.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis002.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis003.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis007.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis008.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis010.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis011.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Euler001.cpp">
+      <Filter>Euler</Filter>
+    </ClCompile>
+    <ClCompile Include="Euler002.cpp">
+      <Filter>Euler</Filter>
+    </ClCompile>
+    <ClCompile Include="Euler003.cpp">
+      <Filter>Euler</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
