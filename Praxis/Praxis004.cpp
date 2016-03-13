@@ -77,6 +77,18 @@ void display(const container::multimap<int, container::static_vector<int,9>>& va
 	std::cout << std::endl;
     std::cout << "-------------" << std::endl;
 }
+void display_peers(const int &s, boost::container::container_detail::iterator_from_iiterator<boost::intrusive::tree_iterator<boost::intrusive::bhtraits<boost::container::container_detail::tree_node<std::pair<const int, boost::container::static_vector<int, 27Ui64>>, void *, boost::container::red_black_tree, true>, boost::intrusive::rbtree_node_traits<void *, true>, boost::intrusive::normal_link, boost::intrusive::dft_tag, 3U>, false>, true> &peers, boost::container::multimap<int, boost::container::static_vector<int, 9Ui64>> & cells, const boost::container::multimap<int, boost::container::static_vector<int, 27Ui64>> & peermap) {
+	std::cout << "Peers of " << s << "->[";
+	boost::copy(peers->second, std::ostream_iterator<int>(std::cout, ","));
+	auto values = boost::accumulate(peers->second, std::set<int>(), [&cells, &peermap](auto& values, auto p) {
+		auto cell_values_in_peer = cells.find(p);
+		boost::copy(cell_values_in_peer->second, std::inserter(values, values.begin()));
+		return values;
+	});
+	std::cout << "] contain [";
+	boost::copy(values, std::ostream_iterator<int>(std::cout, ","));
+	std::cout << "]" << std::endl;
+}
 
 
 // Each cell has 9 possible values
@@ -118,34 +130,39 @@ bool eliminate(
 	return true;
 }
 
-void display_peers(const int &s, boost::container::container_detail::iterator_from_iiterator<boost::intrusive::tree_iterator<boost::intrusive::bhtraits<boost::container::container_detail::tree_node<std::pair<const int, boost::container::static_vector<int, 27Ui64>>, void *, boost::container::red_black_tree, true>, boost::intrusive::rbtree_node_traits<void *, true>, boost::intrusive::normal_link, boost::intrusive::dft_tag, 3U>, false>, true> &peers, boost::container::multimap<int, boost::container::static_vector<int, 9Ui64>> & cells, const boost::container::multimap<int, boost::container::static_vector<int, 27Ui64>> & peermap) {
-	std::cout << "Peers of " << s << "->[";
-	boost::copy(peers->second, std::ostream_iterator<int>(std::cout, ","));
-	auto values = boost::accumulate(peers->second, std::set<int>(), [&cells, &peermap](auto& values, auto p) {
-		auto cell_values_in_peer = cells.find(p);
-		boost::copy(cell_values_in_peer->second, std::inserter(values, values.begin()));
-		return values;
-	});
-	std::cout << "] contain [";
-	boost::copy(values, std::ostream_iterator<int>(std::cout, ","));
-	std::cout << "]" << std::endl;
-}
-
 bool assign_element(
 	container::multimap<int, container::static_vector<int,9>>& cells,
     const container::multimap<int,container::static_vector<int, 27>>& peermap,
     const int cell,
     const int d) {
-    auto cell_values_iter = cells.find(cell);
-    auto& cell_values = cell_values_iter->second;
 	// Find other values except d
-	auto others = cell_values | adaptors::transformed([&](auto i) { return i == d ? 0 : i; });
-	if (std::all_of(others.begin(), others.end(), std::bind1st(std::equal_to<int>(), 0))) {
+	auto& cell_values = cells.find(cell)->second;
+	auto others = cell_values | adaptors::transformed([&d](auto i) { return i == d ? 0 : i; });
+	if (std::all_of(others.begin(), others.end(), std::bind1st(std::equal_to<int>(), 0))) { 
 		return false;
 	}
 	bool elim = std::all_of(others.begin(), others.end(), [&](auto n) { 
 		return n == 0 ? true : eliminate(cells, peermap, cell, n); }); 
 	return elim;
+}
+
+bool search_sudoku(container::multimap<int, container::static_vector<int, 9>>& cells,
+			const container::multimap<int, container::static_vector<int, 27>>& peermap,
+			const int cell,
+			const int d) {
+	container::multimap<int, container::static_vector<int, 9>> newcells;
+	copy(cells, std::inserter(newcells, newcells.begin()));
+	if (assign_element(newcells, peermap, cell, d) == true) {
+		cells.swap(newcells);
+		for (int s = 0; s < 81; s++) {
+			for (int n = 1; n <= 9; n++) {
+				search_sudoku(newcells, peermap, s, n);
+				//	return false;
+			}
+		}
+		return true;
+	}
+	return false;
 }
 
 void Praxis004()
@@ -171,5 +188,6 @@ void Praxis004()
 				display(valuemap);
 			}
         }
+		search_sudoku(valuemap, peermap, 1, 3);
 	}
 }
