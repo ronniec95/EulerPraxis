@@ -112,22 +112,8 @@ bool eliminate(
 		auto peers_iter = peermap.find(s);
 		auto peers = peers_iter->second;
 		auto d2 = find_if(cell_values, std::bind1st(std::not_equal_to<int>(), 0));
-		if (!std::all_of(peers.begin(), peers.end(), [&](auto n) { return eliminate(cells, peermap, n, *d2); })) {
+		if (!std::all_of(peers.begin(), peers.end(), [&](auto n) { return eliminate(cells, peermap, n, *d2); }))
 			return false;
-		}
-	}
-	// See if we can eliminate any other cells that have only 1 value left
-	auto peers = peermap.find(s);
-	auto possibilities = boost::accumulate(peers->second, 0U, [&cells, &peermap](auto count, auto p) {
-		auto cell_values_in_peer = cells.find(p);
-		return count + static_cast<unsigned int>(count_if(cell_values_in_peer->second, std::bind2nd(std::not_equal_to<int>(), 0)));
-	});
-	if (possibilities == 0U) {
-		return false;
-	}
-	if (possibilities == 1U) {
-		display_peers(s, peers, cells, peermap);
-
 	}
 	return true;
 }
@@ -185,20 +171,5 @@ void Praxis004()
 				display(valuemap);
 			}
         }
-		for (int s = 0; s < 81; s++) {
-			auto cell_values = valuemap.find(s);
-			range::for_each(cell_values->second, [&](int v) {
-				if (v > 0) {
-					std::cout << "Trying " << v << " in " << s << std::endl;
-					container::multimap<int, container::static_vector<int, 9>> newmap;
-					boost::copy(valuemap, std::inserter(newmap, newmap.begin()));
-					if (assign_element(newmap, peermap, s, v) == true) {
-						valuemap.swap(newmap);
-						display(valuemap);
-					}
-				}
-			});
-		}		
-		display(valuemap);
 	}
 }
