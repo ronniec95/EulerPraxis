@@ -82,7 +82,7 @@ void Praxis011() {
 			markov.insert(std::make_pair(key, chainlist({ std::make_pair(word3,1) })));
 		}
 		else {
-			auto& word = boost::find_if(chain->second, [&word3](auto& val) { return val.first == word3;  });
+			auto word = boost::find_if(chain->second, [&word3](auto& val) { return val.first == word3;  });
 			if (word != chain->second.end()) {
 				word->second++;
 			}

@@ -74,5 +74,8 @@
     <ClCompile Include="Euler003.cpp">
       <Filter>Euler</Filter>
     </ClCompile>
+    <ClCompile Include="Praxis005.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

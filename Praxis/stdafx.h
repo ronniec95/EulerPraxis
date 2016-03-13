@@ -13,10 +13,6 @@
 
 
 // TODO: reference additional headers your program requires here
-#define BOOST_TEST_MAIN
-#define BOOST_ALL_DYN_LINK
-#include <boost/test/unit_test.hpp>
-#include <boost\log\trivial.hpp>
 #include <boost/range/adaptors.hpp>
 #include <boost/range/algorithm.hpp>
 #include <boost/range/numeric.hpp>
