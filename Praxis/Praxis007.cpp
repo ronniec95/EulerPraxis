@@ -8,11 +8,11 @@ void Praxis007() {
 	std::string floors = "bfcms";
 	bool solved = false;
 	do {
-		auto c = find(floors, 'c');
-		auto f = find(floors, 'f');
-		auto m = find(floors, 'm');
-		auto s = find(floors, 's');
-		auto b = find(floors, 'b');
+		auto c = range::find(floors, 'c');
+		auto f = range::find(floors, 'f');
+		auto m = range::find(floors, 'm');
+		auto s = range::find(floors, 's');
+		auto b = range::find(floors, 'b');
 		auto baker = [](auto& floors) { return 'b' != floors[4]; };
 		auto cooper = [&](auto& floors) { return 'c' != floors[4] && abs(std::distance(f, c)) > 1; };
 		auto fletcher = [&](auto& floors) { return 'f' != floors[0] && 'f' != floors[4] && abs(std::distance(f, c)) > 1; };

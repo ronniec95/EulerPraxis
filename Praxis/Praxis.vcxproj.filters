@@ -33,6 +33,12 @@
     <ClInclude Include="Euler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Praxis004.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,6 +81,24 @@
       <Filter>Euler</Filter>
     </ClCompile>
     <ClCompile Include="Praxis005.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis012.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis013.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis014.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis015.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
+    <ClCompile Include="Praxis016.cpp">
       <Filter>Praxis</Filter>
     </ClCompile>
   </ItemGroup>

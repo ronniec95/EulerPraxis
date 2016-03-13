@@ -9,6 +9,7 @@
 #pragma once
 
 #include <stdio.h>
+#include <string>
 
 void Praxis001();
 void Praxis002();
@@ -18,6 +19,11 @@ void Praxis005();
 void Praxis006();
 void Praxis007();
 void Praxis008();
-void Praxis009();
 void Praxis010();
 void Praxis011();
+void Praxis012();
+void Praxis013();
+void Praxis014(const std::string&);
+void Praxis015();
+void Praxis016();
+

@@ -50,7 +50,7 @@ auto choose_word(
 void Praxis011() {
 	typedef double freq;
 	std::string story;
-	std::fstream file("Story.txt");
+	std::fstream file("Story - Copy.txt");
 	if (file.is_open()) {
 		// Fastest way to read in a file
 		const size_t sz = 512 * 1024;
@@ -70,12 +70,10 @@ void Praxis011() {
 	// Iterate over the story again splitting on a space
 	tokenizer<char_separator<char>> tokens(story, char_separator<char>(" "));
 	auto token = tokens.begin();
-	auto token2 = token++;
-	auto token3 = token++;
-	for(; token3 != tokens.end(); token++, token2++, token3++) {
-		auto word1 = words.find(*token);
-		auto word2 = words.find(*token2);
-		auto word3 = words.find(*token3);
+	auto word1 = words.find(*token++);
+	auto word2 = words.find(*token++);
+	auto word3 = words.find(*token++);
+	do {
 		auto key = std::make_pair(word1, word2);
 		auto chain = markov.find(key);
 		if (chain == markov.end()) {
@@ -90,7 +88,11 @@ void Praxis011() {
 				chain->second.emplace_back(std::make_pair(word3, 1));
 			}
 		}
-	}
+		word1 = word2;
+		word2 = word3;
+		word3 = words.find(*token);
+		token++;
+	} while (token != tokens.end());
 
 	// Now just sort the wordlists which have 2 or more options
 	for_each(markov | adaptors::filtered([](auto i) { return i.second.size() > 1; }), [](auto& m) {
@@ -100,9 +102,9 @@ void Praxis011() {
 	auto markoviter = markov.begin();
 	for (auto i = 0U; i <= rand() % markov.size(); i++, markoviter++); // Do nothing
 	auto start = markoviter->first;
-	auto word1 = start.first, word2 = start.second;
+	word1 = start.first, word2 = start.second;
 	std::cout << *word1 << " " << *word2 << " ";
-	for_each(irange(0, 500),[&word1,&word2,&markov](auto) { 
+	for_each(irange(0, 500), [&word1, &word2, &markov](auto) {
 		std::cout << *choose_word(word1, word2, markov) << " ";
 	});
 }

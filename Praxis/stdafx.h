@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <tchar.h>
 
-
+#define BOOST_ALL_DYN_LINK
 
 // TODO: reference additional headers your program requires here
 #include <boost/range/adaptors.hpp>

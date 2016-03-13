@@ -20,6 +20,7 @@
 #include <boost/container/map.hpp>
 #include <boost/container/static_vector.hpp>
 #include <numeric>
+#include "Praxis004.h"
 
 using namespace boost;
 
@@ -87,7 +88,8 @@ container::multimap<int, container::static_vector<int,9>> assign_values(const st
 	}
     return assignees;
 }
-
+// fwd declaration
+bool assign_element(container::multimap<int, container::static_vector<int, 9>>& cells,const container::multimap<int, container::static_vector<int, 27>>& peermap,const int cell,const int d);
 bool eliminate(
 	container::multimap<int, container::static_vector<int, 9>>& cells,
 	const container::multimap<int, container::static_vector<int, 27>>& peermap,
@@ -101,7 +103,7 @@ bool eliminate(
 	if (find_cell == cell_values.end())
 		return true;
 	cell_values[d - 1] = 0;
-	auto remaining = std::count_if(cell_values.begin(), cell_values.end(), std::bind2nd(std::greater<int>(), 0));
+	auto remaining = std::count_if(cell_values.begin(), cell_values.end(), std::bind2nd(std::not_equal_to<int>(), 0));
 	if (remaining == 0) {
 		cell_values[d - 1] = d;
 		return false;
@@ -109,13 +111,38 @@ bool eliminate(
 	else if (remaining == 1) {
 		auto peers_iter = peermap.find(s);
 		auto peers = peers_iter->second;
-		auto d2 = std::find_if_not(cell_values.begin(), cell_values.end(), std::bind1st(std::equal_to<int>(), 0));
+		auto d2 = find_if(cell_values, std::bind1st(std::not_equal_to<int>(), 0));
 		if (!std::all_of(peers.begin(), peers.end(), [&](auto n) { return eliminate(cells, peermap, n, *d2); })) {
 			return false;
 		}
 	}
+	// See if we can eliminate any other cells that have only 1 value left
+	auto peers = peermap.find(s);
+	auto possibilities = boost::accumulate(peers->second, 0U, [&cells, &peermap](auto count, auto p) {
+		auto cell_values_in_peer = cells.find(p);
+		return count + static_cast<unsigned int>(count_if(cell_values_in_peer->second, std::bind2nd(std::not_equal_to<int>(), 0)));
+	});
+	if (possibilities == 0U) {
+		return false;
+	}
+	if (possibilities == 1U) {
+		display_peers(s, peers, cells, peermap);
 
+	}
 	return true;
+}
+
+void display_peers(const int &s, boost::container::container_detail::iterator_from_iiterator<boost::intrusive::tree_iterator<boost::intrusive::bhtraits<boost::container::container_detail::tree_node<std::pair<const int, boost::container::static_vector<int, 27Ui64>>, void *, boost::container::red_black_tree, true>, boost::intrusive::rbtree_node_traits<void *, true>, boost::intrusive::normal_link, boost::intrusive::dft_tag, 3U>, false>, true> &peers, boost::container::multimap<int, boost::container::static_vector<int, 9Ui64>> & cells, const boost::container::multimap<int, boost::container::static_vector<int, 27Ui64>> & peermap) {
+	std::cout << "Peers of " << s << "->[";
+	boost::copy(peers->second, std::ostream_iterator<int>(std::cout, ","));
+	auto values = boost::accumulate(peers->second, std::set<int>(), [&cells, &peermap](auto& values, auto p) {
+		auto cell_values_in_peer = cells.find(p);
+		boost::copy(cell_values_in_peer->second, std::inserter(values, values.begin()));
+		return values;
+	});
+	std::cout << "] contain [";
+	boost::copy(values, std::ostream_iterator<int>(std::cout, ","));
+	std::cout << "]" << std::endl;
 }
 
 bool assign_element(
@@ -127,7 +154,11 @@ bool assign_element(
     auto& cell_values = cell_values_iter->second;
 	// Find other values except d
 	auto others = cell_values | adaptors::transformed([&](auto i) { return i == d ? 0 : i; });
-	bool elim = std::all_of(others.begin(), others.end(), [&](auto n) { return n == 0 ? true : eliminate(cells, peermap, cell, n); }); 
+	if (std::all_of(others.begin(), others.end(), std::bind1st(std::equal_to<int>(), 0))) {
+		return false;
+	}
+	bool elim = std::all_of(others.begin(), others.end(), [&](auto n) { 
+		return n == 0 ? true : eliminate(cells, peermap, cell, n); }); 
 	return elim;
 }
 
@@ -148,9 +179,26 @@ void Praxis004()
         // Each cell starts off with 9 values (1-9) but it's peers remove valid numbers
         auto peermap = assign_peers(rawboard);
         auto valuemap = assign_values(rawboard);
-		for (int v = 0; v < valuemap.size(); v++) {
-			assign_element(valuemap, peermap, v, rawboard[v]);
-			display(valuemap);
+		for (int v = 0; v < rawboard.size(); v++) {
+			if (rawboard[v]) {
+				assign_element(valuemap, peermap, v, rawboard[v]);
+				display(valuemap);
+			}
         }
-    }
+		for (int s = 0; s < 81; s++) {
+			auto cell_values = valuemap.find(s);
+			range::for_each(cell_values->second, [&](int v) {
+				if (v > 0) {
+					std::cout << "Trying " << v << " in " << s << std::endl;
+					container::multimap<int, container::static_vector<int, 9>> newmap;
+					boost::copy(valuemap, std::inserter(newmap, newmap.begin()));
+					if (assign_element(newmap, peermap, s, v) == true) {
+						valuemap.swap(newmap);
+						display(valuemap);
+					}
+				}
+			});
+		}		
+		display(valuemap);
+	}
 }
