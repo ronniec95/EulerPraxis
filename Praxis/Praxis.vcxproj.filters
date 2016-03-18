@@ -101,5 +101,8 @@
     <ClCompile Include="Praxis016.cpp">
       <Filter>Praxis</Filter>
     </ClCompile>
+    <ClCompile Include="Praxis017.cpp">
+      <Filter>Praxis</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
